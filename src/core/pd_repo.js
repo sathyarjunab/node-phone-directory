@@ -1,28 +1,28 @@
-let mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-// let data_chunks = require("../constants/pd_constants");
+import data_chunks from "../constants/pd_constants.js";
+
+import logger from "./pd_logger.js";
 
 class repo {
   constructor() {
-    // this.connectionString = [
-    //   "mongodb+srv://",
-    //   data_chunks.DB_user,
-    //   ":",
-    //   data_chunks.DB_pass,
-    //   "@cluster0.br6n1f3.mongodb.net/",
-    // ].join();
+    this.connectionString = [
+      "mongodb+srv://",
+      data_chunks.DB_user,
+      ":",
+      data_chunks.DB_pass,
+      "@cluster0.br6n1f3.mongodb.net/",
+    ].join("");
     this.connect();
   }
   connect = async () => {
     await mongoose
-      .connect(
-        "mongodb+srv://sathyarjun007:SSgafPRhTbgsRWL0@cluster0.br6n1f3.mongodb.net/"
-      )
+      .connect(this.connectionString)
       .then(() => {
-        console.log("!!!!!!!!!CONNECTED!!!!!!!!!!");
+        logger.info("CONNECTED");
       })
       .catch((err) => {
-        console.log(err);
+        logger.error(err.message);
       });
   };
 
@@ -33,7 +33,7 @@ class repo {
         return Data;
       })
       .catch((err) => {
-        console.log(err);
+        logger.error(err.message);
       });
   };
 
@@ -49,8 +49,7 @@ class repo {
         return { data_Added: "DONE" };
       })
       .catch((err) => {
-        console.log(err);
-        return err;
+        logger.error(err.message);
       });
   };
 
@@ -66,7 +65,7 @@ class repo {
         return { update: "DONE" };
       })
       .catch((err) => {
-        console.log(err);
+        logger.error(err.message);
       });
   };
   deleteData = async (id, dir) => {
@@ -76,10 +75,9 @@ class repo {
         return { delete: "DONE" };
       })
       .catch((err) => {
-        console.log(err);
-        return err;
+        logger.error(err.message);
       });
   };
 }
 
-module.exports = new repo();
+export default new repo();

@@ -1,4 +1,4 @@
-let mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
@@ -9,4 +9,4 @@ const directory = new Schema({
   email: String,
 });
 
-module.exports = mongoose.model("dir", directory);
+export default mongoose.model("dir", directory);
