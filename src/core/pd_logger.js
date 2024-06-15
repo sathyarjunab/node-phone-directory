@@ -8,7 +8,7 @@ class Logger {
           winston.format.colorize(),
           winston.format.printf(
             ({ level, message, timestamp }) =>
-              `${timestamp} [${level}]: ${message}`
+              `${timestamp} [${level}]: ${message}` //2024-06-15T18:04:39.381Z [info]: CONNECTED
           )
         ),
       })

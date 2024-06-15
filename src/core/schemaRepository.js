@@ -1,33 +1,25 @@
 import mongoose from "mongoose";
 
-import data_chunks from "../constants/pd_constants.js";
-
+import connectionString from "../config/config.js";
 import logger from "./pd_logger.js";
 
-class repo {
+class schemaRepository {
   constructor() {
-    this.connectionString = [
-      "mongodb+srv://",
-      data_chunks.DB_user,
-      ":",
-      data_chunks.DB_pass,
-      "@cluster0.br6n1f3.mongodb.net/",
-    ].join("");
     this.connect();
   }
-  connect = async () => {
-    await mongoose
-      .connect(this.connectionString)
+  connect() {
+    mongoose
+      .connect(connectionString)
       .then(() => {
         logger.info("CONNECTED");
       })
       .catch((err) => {
         logger.error(err.message);
       });
-  };
+  }
 
-  getData = async (dir) => {
-    return await dir
+  getData(dir) {
+    return dir
       .find()
       .then((Data) => {
         return Data;
@@ -35,10 +27,10 @@ class repo {
       .catch((err) => {
         logger.error(err.message);
       });
-  };
+  }
 
-  addData = async (body, dir) => {
-    return await new dir({
+  addData(body, dir) {
+    return new dir({
       name: body.name,
       phone_number: body.number,
       work: body.work,
@@ -51,10 +43,10 @@ class repo {
       .catch((err) => {
         logger.error(err.message);
       });
-  };
+  }
 
-  updateData = async (id, body, dir) => {
-    return await dir
+  updateData(id, body, dir) {
+    return dir
       .findByIdAndUpdate(id, {
         name: body.name,
         phone_number: body.number,
@@ -67,9 +59,9 @@ class repo {
       .catch((err) => {
         logger.error(err.message);
       });
-  };
-  deleteData = async (id, dir) => {
-    return await dir
+  }
+  deleteData(id, dir) {
+    return dir
       .findByIdAndDelete(id)
       .then((res) => {
         return { delete: "DONE" };
@@ -77,7 +69,7 @@ class repo {
       .catch((err) => {
         logger.error(err.message);
       });
-  };
+  }
 }
 
-export default new repo();
+export default new schemaRepository();

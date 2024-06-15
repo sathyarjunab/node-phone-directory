@@ -1,29 +1,23 @@
-import repo from "../core/pd_repo.js";
+import repo from "../core/schemaRepository.js";
 
 import dir from "../schemas/pd_schemas.js";
 
 class services {
-  constructor() {
-    this.getData = repo.getData;
-    this.addData = repo.addData;
-    this.updateData = repo.updateData;
-    this.deleteData = repo.deleteData;
+  async get() {
+    return await repo.getData(dir);
   }
-  get = async () => {
-    return await this.getData(dir);
-  };
 
-  post = async (body) => {
-    return await this.addData(body, dir);
-  };
+  async post(body) {
+    return await repo.addData(body, dir);
+  }
 
-  patch = async (id, body) => {
-    return await this.updateData(id, body, dir);
-  };
+  async patch(id, body) {
+    return await repo.updateData(id, body, dir);
+  }
 
-  del = async (id) => {
-    return await this.deleteData(id, dir);
-  };
+  async del(id) {
+    return await repo.deleteData(id, dir);
+  }
 }
 let service = new services();
 export default service;

@@ -11,41 +11,41 @@ class Route {
     router.patch("/update/:id", this.patch);
     router.delete("/delete/:id", this.delete);
   }
-  get = async (req, res) => {
+  async get(req, res) {
     try {
       const result = await services.get(req.body);
       res.send(result);
     } catch (err) {
       res.send({ error: err.message });
     }
-  };
+  }
 
-  post = async (req, res) => {
+  async post(req, res) {
     try {
       const result = await services.post(req.body);
       res.send(result);
     } catch (err) {
       res.send({ error: err.message });
     }
-  };
+  }
 
-  patch = async (req, res) => {
+  async patch(req, res) {
     try {
       const result = await services.patch(req.params.id, req.body);
       res.send(result);
     } catch (err) {
       res.send({ error: err.message });
     }
-  };
+  }
 
-  delete = async (req, res) => {
+  async delete(req, res) {
     try {
       const result = await services.del(req.params.id);
       res.send(result);
     } catch (err) {
       res.send({ error: err.message });
     }
-  };
+  }
   connect = () => {
     return router;
   };
