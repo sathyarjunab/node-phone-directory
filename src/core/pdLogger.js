@@ -1,4 +1,5 @@
 import winston from "winston";
+
 class Logger {
   constructor() {
     this.logger.add(

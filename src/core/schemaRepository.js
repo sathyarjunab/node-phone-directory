@@ -1,23 +1,6 @@
-import mongoose from "mongoose";
-
-import connectionString from "../config/config.js";
-import logger from "./pd_logger.js";
+import logger from "./pdLogger.js";
 
 class schemaRepository {
-  constructor() {
-    this.connect();
-  }
-  connect() {
-    mongoose
-      .connect(connectionString)
-      .then(() => {
-        logger.info("CONNECTED");
-      })
-      .catch((err) => {
-        logger.error(err.message);
-      });
-  }
-
   getData(dir) {
     return dir
       .find()
@@ -29,29 +12,38 @@ class schemaRepository {
       });
   }
 
-  addData(body, dir) {
+  addData(body, dir, time) {
+    let now = new Date();
     return new dir({
       name: body.name,
-      phone_number: body.number,
+      phone_number: body.phoneNumber,
+      mobile_number: body.mobileNumber,
+      teliphone_number: body.teliphoneNumber,
       work: body.work,
       email: body.email,
+      created_time: now.toString(),
+      updated_time: now.toString(),
     })
       .save()
       .then((res) => {
-        return { data_Added: "DONE" };
+        return { dataAdded: "DONE" };
       })
       .catch((err) => {
         logger.error(err.message);
       });
   }
 
-  updateData(id, body, dir) {
+  updateData(id, body, dir, time) {
+    let now = new Date();
     return dir
       .findByIdAndUpdate(id, {
         name: body.name,
-        phone_number: body.number,
+        phone_number: body.phoneNumber,
+        mobile_number: body.mobileNumber,
+        teliphone_number: body.teliphoneNumber,
         work: body.work,
         email: body.email,
+        updated_time: now.toString(),
       })
       .then((res) => {
         return { update: "DONE" };

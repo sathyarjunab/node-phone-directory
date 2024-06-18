@@ -1,8 +1,9 @@
 import express from "express";
 
-import services from "../services/pd_services.js";
+import services from "../services/pdServices.js";
 
 let router = express.Router();
+let service = new services();
 
 class Route {
   constructor() {
@@ -13,7 +14,7 @@ class Route {
   }
   async get(req, res) {
     try {
-      const result = await services.get(req.body);
+      const result = await service.get(req.body);
       res.send(result);
     } catch (err) {
       res.send({ error: err.message });
@@ -22,7 +23,7 @@ class Route {
 
   async post(req, res) {
     try {
-      const result = await services.post(req.body);
+      const result = await service.post(req.body);
       res.send(result);
     } catch (err) {
       res.send({ error: err.message });
@@ -31,7 +32,7 @@ class Route {
 
   async patch(req, res) {
     try {
-      const result = await services.patch(req.params.id, req.body);
+      const result = await service.patch(req.params.id, req.body);
       res.send(result);
     } catch (err) {
       res.send({ error: err.message });
@@ -40,7 +41,7 @@ class Route {
 
   async delete(req, res) {
     try {
-      const result = await services.del(req.params.id);
+      const result = await service.del(req.params.id);
       res.send(result);
     } catch (err) {
       res.send({ error: err.message });
