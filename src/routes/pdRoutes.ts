@@ -1,8 +1,8 @@
 import express from "express";
 
-import { CustomRequest } from "../dto/request/req.ts";
-import { CustomResponse } from "../dto/response/res.ts";
-import Services from "../services/pdServices.ts";
+import { CustomRequest } from "../dto/request/req";
+import { CustomResponse } from "../dto/response/res";
+import Services from "../services/pdServices";
 
 let service = new Services();
 let router = express.Router();
@@ -14,7 +14,7 @@ class Route {
     router.patch("/update/:id", this.patch);
     router.delete("/delete/:id", this.delete);
   }
-  async get(res: any) {
+  async get(req: any, res: any) {
     try {
       const result = await service.get();
       res.send(result);

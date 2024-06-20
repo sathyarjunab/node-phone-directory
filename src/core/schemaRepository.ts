@@ -1,5 +1,5 @@
 import { add } from "winston";
-import logger from "./pdLogger.js";
+import logger from "./pdLogger";
 
 interface Repo {
   getData: (dir: any) => Promise<any>;
