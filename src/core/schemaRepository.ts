@@ -1,18 +1,26 @@
+import { add } from "winston";
 import logger from "./pdLogger.js";
 
-class schemaRepository {
-  getData(dir) {
+interface Repo {
+  getData: (dir: any) => Promise<any>;
+  addData: (body: any, dir: any) => Promise<any>;
+  updateData: (id: string, body: any, dir: any) => Promise<any>;
+  deleteData: (id: string, dir: any) => Promise<any>;
+}
+
+class schemaRepository implements Repo {
+  getData(dir: any) {
     return dir
       .find()
-      .then((Data) => {
+      .then((Data: any) => {
         return Data;
       })
-      .catch((err) => {
+      .catch((err: any) => {
         logger.error(err.message);
       });
   }
 
-  addData(body, dir, time) {
+  addData(body: any, dir: any) {
     let now = new Date();
     return new dir({
       name: body.name,
@@ -23,17 +31,18 @@ class schemaRepository {
       email: body.email,
       created_time: now.toString(),
       updated_time: now.toString(),
+      add,
     })
       .save()
-      .then((res) => {
+      .then(() => {
         return { dataAdded: "DONE" };
       })
-      .catch((err) => {
+      .catch((err: any) => {
         logger.error(err.message);
       });
   }
 
-  updateData(id, body, dir, time) {
+  updateData(id: string, body: any, dir: any) {
     let now = new Date();
     return dir
       .findByIdAndUpdate(id, {
@@ -45,23 +54,23 @@ class schemaRepository {
         email: body.email,
         updated_time: now.toString(),
       })
-      .then((res) => {
+      .then(() => {
         return { update: "DONE" };
       })
-      .catch((err) => {
+      .catch((err: any) => {
         logger.error(err.message);
       });
   }
-  deleteData(id, dir) {
+  deleteData(id: string, dir: any) {
     return dir
       .findByIdAndDelete(id)
-      .then((res) => {
+      .then(() => {
         return { delete: "DONE" };
       })
-      .catch((err) => {
+      .catch((err: any) => {
         logger.error(err.message);
       });
   }
 }
 
-export default new schemaRepository();
+export default schemaRepository;
