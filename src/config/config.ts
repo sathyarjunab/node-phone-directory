@@ -1,5 +1,11 @@
 import dataChunks from "../constants/pdConstants";
 
-const connectionString = ["mongodb://localhost:27017/a"].join("");
+let connectionString = [
+  "mongodb+srv://",
+  dataChunks.DBUser,
+  ":",
+  dataChunks.DBPass,
+  "@cluster0.br6n1f3.mongodb.net/",
+].join("");
 
 export default connectionString;

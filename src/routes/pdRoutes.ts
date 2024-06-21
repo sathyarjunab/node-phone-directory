@@ -1,5 +1,6 @@
 import express from "express";
 
+import logger from "../core/pdLogger";
 import { CustomRequest } from "../dto/request/req";
 import { CustomResponse } from "../dto/response/res";
 import Services from "../services/pdServices";
@@ -17,8 +18,9 @@ class Route {
   async get(req: any, res: any) {
     try {
       const result = await service.get();
-      res.send(result);
+      res.status(200).json(result);
     } catch (err: any) {
+      logger.error(err.message);
       res.send({ error: err.message });
     }
   }
@@ -26,8 +28,9 @@ class Route {
   async post(req: CustomRequest, res: CustomResponse) {
     try {
       const result = await service.post(req.body);
-      res.send(result);
-    } catch (err) {
+      res.status(201).json(result);
+    } catch (err: any) {
+      logger.error(err.message);
       res.send({ error: (err as Error).message });
     }
   }
@@ -35,8 +38,9 @@ class Route {
   async patch(req: CustomRequest, res: CustomResponse) {
     try {
       const result = await service.patch(req.params.id, req.body);
-      res.send(result);
-    } catch (err) {
+      res.status(200).json(result);
+    } catch (err: any) {
+      logger.error(err.message);
       res.send({ error: (err as Error).message });
     }
   }
@@ -44,8 +48,9 @@ class Route {
   async delete(req: CustomRequest, res: CustomResponse) {
     try {
       const result = await service.del(req.params.id);
-      res.send(result);
-    } catch (err) {
+      res.status(200).json(result);
+    } catch (err: any) {
+      logger.error(err.message);
       res.send({ error: (err as Error).message });
     }
   }
