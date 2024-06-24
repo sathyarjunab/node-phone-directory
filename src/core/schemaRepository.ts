@@ -1,76 +1,103 @@
-import { add } from "winston";
+import { Model } from "mongoose";
+import { CustomRequest } from "../dto/request/req"; // Assuming this is the correct path
 import logger from "./pdLogger";
 
-interface Repo {
-  getData: (dir: any) => Promise<any>;
-  addData: (body: any, dir: any) => Promise<any>;
-  updateData: (id: string, body: any, dir: any) => Promise<any>;
-  deleteData: (id: string, dir: any) => Promise<any>;
+interface DataDocument extends Document {
+  name: string;
+  phone_number: number;
+  mobile_number: number;
+  teliphone_number: number;
+  work: string;
+  email: string;
+  created_time: string;
+  updated_time: string;
 }
 
-class schemaRepository implements Repo {
-  getData(dir: any) {
-    return dir
-      .find()
-      .then((Data: any) => {
-        return Data;
-      })
-      .catch((err: any) => {
-        logger.error(err.message);
-      });
+interface Repo {
+  getData: (dir: Model<DataDocument>) => Promise<DataDocument[] | undefined>;
+  addData: (
+    body: CustomRequest["body"],
+    dir: Model<DataDocument>
+  ) => Promise<{ dataAdded: string } | undefined>;
+  updateData: (
+    id: string,
+    body: CustomRequest["body"],
+    dir: Model<DataDocument>
+  ) => Promise<{ update: string } | undefined>;
+  deleteData: (
+    id: string,
+    dir: Model<DataDocument>
+  ) => Promise<{ delete: string } | undefined>;
+}
+
+class SchemaRepository implements Repo {
+  async getData(dir: Model<DataDocument>): Promise<DataDocument[] | undefined> {
+    try {
+      const data = await dir.find().exec();
+      return data;
+    } catch (err: any) {
+      throw err;
+    }
   }
 
-  addData(body: any, dir: any) {
-    let now = new Date();
-    return new dir({
-      name: body.name,
-      phone_number: body.phoneNumber,
-      mobile_number: body.mobileNumber,
-      teliphone_number: body.teliphoneNumber,
-      work: body.work,
-      email: body.email,
-      created_time: now.toString(),
-      updated_time: now.toString(),
-      add,
-    })
-      .save()
-      .then(() => {
-        return { dataAdded: "DONE" };
-      })
-      .catch((err: any) => {
-        logger.error(err.message);
-      });
-  }
-
-  updateData(id: string, body: any, dir: any) {
-    let now = new Date();
-    return dir
-      .findByIdAndUpdate(id, {
+  async addData(
+    body: CustomRequest["body"],
+    dir: Model<DataDocument>
+  ): Promise<{ dataAdded: string } | undefined> {
+    try {
+      let now = new Date();
+      const newData = new dir({
         name: body.name,
-        phone_number: body.phoneNumber,
-        mobile_number: body.mobileNumber,
-        teliphone_number: body.teliphoneNumber,
+        phone_number: body.phone_number,
+        mobile_number: body.mobile_number,
+        teliphone_number: body.teliphone_number,
         work: body.work,
         email: body.email,
-        updated_time: now.toString(),
-      })
-      .then(() => {
-        return { update: "DONE" };
-      })
-      .catch((err: any) => {
-        logger.error(err.message);
+        created_time: now.toISOString(),
+        updated_time: now.toISOString(),
       });
+      await newData.save();
+      return { dataAdded: "DONE" };
+    } catch (err: any) {
+      throw err;
+    }
   }
-  deleteData(id: string, dir: any) {
-    return dir
-      .findByIdAndDelete(id)
-      .then(() => {
-        return { delete: "DONE" };
-      })
-      .catch((err: any) => {
-        logger.error(err.message);
-      });
+
+  async updateData(
+    id: string,
+    body: CustomRequest["body"],
+    dir: Model<DataDocument>
+  ): Promise<{ update: string } | undefined> {
+    let now = new Date();
+    try {
+      await dir
+        .findByIdAndUpdate(id, {
+          name: body.name,
+          phone_number: body.phone_number,
+          mobile_number: body.mobile_number,
+          teliphone_number: body.teliphone_number,
+          work: body.work,
+          email: body.email,
+          updated_time: now.toISOString(),
+        })
+        .exec();
+      return { update: "DONE" };
+    } catch (err: any) {
+      throw err;
+    }
+  }
+
+  async deleteData(
+    id: string,
+    dir: Model<DataDocument>
+  ): Promise<{ delete: string } | undefined> {
+    try {
+      await dir.findByIdAndDelete(id).exec();
+      return { delete: "DONE" };
+    } catch (err: any) {
+      throw err;
+    }
   }
 }
 
-export default schemaRepository;
+export default SchemaRepository;

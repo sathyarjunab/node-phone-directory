@@ -15,43 +15,43 @@ class Route {
     router.patch("/update/:id", this.patch);
     router.delete("/delete/:id", this.delete);
   }
-  async get(req: any, res: any) {
+  async get(req: CustomRequest, res: CustomResponse): Promise<void> {
     try {
       const result = await service.get();
       res.status(200).json(result);
     } catch (err: any) {
       logger.error(err.message);
-      res.send({ error: err.message });
+      res.status(500).json({ error: err.message });
     }
   }
 
-  async post(req: CustomRequest, res: CustomResponse) {
+  async post(req: CustomRequest, res: CustomResponse): Promise<void> {
     try {
       const result = await service.post(req.body);
       res.status(201).json(result);
     } catch (err: any) {
       logger.error(err.message);
-      res.send({ error: (err as Error).message });
+      res.status(500).json({ error: err.message });
     }
   }
 
-  async patch(req: CustomRequest, res: CustomResponse) {
+  async patch(req: CustomRequest, res: CustomResponse): Promise<void> {
     try {
       const result = await service.patch(req.params.id, req.body);
       res.status(200).json(result);
     } catch (err: any) {
       logger.error(err.message);
-      res.send({ error: (err as Error).message });
+      res.status(500).json({ error: err.message });
     }
   }
 
-  async delete(req: CustomRequest, res: CustomResponse) {
+  async delete(req: CustomRequest, res: CustomResponse): Promise<void> {
     try {
       const result = await service.del(req.params.id);
       res.status(200).json(result);
     } catch (err: any) {
       logger.error(err.message);
-      res.send({ error: (err as Error).message });
+      res.status(500).json({ error: err.message });
     }
   }
   connect = () => {
