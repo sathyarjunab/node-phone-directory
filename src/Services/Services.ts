@@ -1,7 +1,8 @@
-import schemarepo from "../core/schemaRepository";
-import logger from "../core/pdLogger";
-import dir from "../schemas/pdSchemas";
-import { CustomRequest } from "../dto/request/req";
+import schemarepo from "../Core/Repositoryimpl";
+import logger from "../Core/Logger";
+import dir from "../Schemas/Schemas";
+import { PhoneEntry } from "../Dto/Request/CreateReq";
+import { UpdatePhoneEntry } from "../Dto/Request/UpdateReq";
 let repo = new schemarepo();
 
 class Services {
@@ -14,7 +15,7 @@ class Services {
     }
   }
 
-  async post(body: CustomRequest["body"]): Promise<any> {
+  async post(body: PhoneEntry): Promise<any> {
     try {
       logger.info("adding");
       return await repo.addData(body, dir);
@@ -23,7 +24,7 @@ class Services {
     }
   }
 
-  async patch(id: string, body: CustomRequest["body"]): Promise<any> {
+  async patch(id: string, body: UpdatePhoneEntry): Promise<any> {
     try {
       logger.info("updating");
       return await repo.updateData(id, body, dir);

@@ -1,9 +1,10 @@
 import express from "express";
+import { Response, Request } from "express";
 
-import logger from "../core/pdLogger";
-import { CustomRequest } from "../dto/request/req";
-import { CustomResponse } from "../dto/response/res";
-import Services from "../services/pdServices";
+import logger from "../Core/Logger";
+import { PhoneEntry } from "../Dto/Request/CreateReq";
+import { UpdatePhoneEntry } from "../Dto/Request/UpdateReq";
+import Services from "../Services/Services";
 
 let service = new Services();
 let router = express.Router();
@@ -15,7 +16,7 @@ class Route {
     router.patch("/update/:id", this.patch);
     router.delete("/delete/:id", this.delete);
   }
-  async get(req: CustomRequest, res: CustomResponse): Promise<void> {
+  async get(req: Request, res: Response): Promise<void> {
     try {
       const result = await service.get();
       res.status(200).json(result);
@@ -25,9 +26,10 @@ class Route {
     }
   }
 
-  async post(req: CustomRequest, res: CustomResponse): Promise<void> {
+  async post(req: Request, res: Response): Promise<void> {
     try {
-      const result = await service.post(req.body);
+      let body = req.body as PhoneEntry;
+      const result = await service.post(body);
       res.status(201).json(result);
     } catch (err: any) {
       logger.error(err.message);
@@ -35,9 +37,11 @@ class Route {
     }
   }
 
-  async patch(req: CustomRequest, res: CustomResponse): Promise<void> {
+  async patch(req: Request, res: Response): Promise<void> {
     try {
-      const result = await service.patch(req.params.id, req.body);
+      let body = req.body as UpdatePhoneEntry;
+      let id = req.params.id as string;
+      const result = await service.patch(id, body);
       res.status(200).json(result);
     } catch (err: any) {
       logger.error(err.message);
@@ -45,9 +49,10 @@ class Route {
     }
   }
 
-  async delete(req: CustomRequest, res: CustomResponse): Promise<void> {
+  async delete(req: Request, res: Response): Promise<void> {
     try {
-      const result = await service.del(req.params.id);
+      let id = req.params.id as string;
+      const result = await service.del(id);
       res.status(200).json(result);
     } catch (err: any) {
       logger.error(err.message);
