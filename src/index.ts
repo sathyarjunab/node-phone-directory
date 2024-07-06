@@ -3,14 +3,16 @@ import mongoose from "mongoose";
 import cors from "cors";
 import bodyParser from "body-parser";
 
-import logger from "./Core/Logger";
-import connectionString from "./Config/Config";
-import Route from "./Routes/Routes";
+import logger from "./Core/logger";
+import connectionString from "./Config/config";
+import Route from "./Routes/routes";
 
 let crudRoutes = new Route().connect();
 
 let app = express();
 app.use(cors());
+
+app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 

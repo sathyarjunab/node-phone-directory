@@ -1,11 +1,12 @@
-interface ContactInfo {
-  type: string;
-  numbers: number;
-}
-
-export interface UpdatePhoneEntry {
+export type UpdatePhoneEntry = {
   name?: string;
-  contacts?: ContactInfo;
   work?: string;
   email?: string;
-}
+  phone_number?: number;
+  mobile_number?: number;
+  teliphone_number?: number;
+};
+
+export type UpdateManyPhoneEntry = UpdatePhoneEntry & {
+  id: string;
+};

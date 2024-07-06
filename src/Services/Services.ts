@@ -1,46 +1,28 @@
-import schemarepo from "../Core/Repositoryimpl";
-import logger from "../Core/Logger";
-import dir from "../Schemas/Schemas";
-import { PhoneEntry } from "../Dto/Request/CreateReq";
-import { UpdatePhoneEntry } from "../Dto/Request/UpdateReq";
-let repo = new schemarepo();
+import { GetResponse } from "../Dto/Response/getRes";
+import { PhoneEntry } from "../Dto/Request/createReq";
+import { CreateResponse } from "../Dto/Response/createRes";
+import { UpdateResponse } from "../Dto/Response/updateRes";
+import { UpdateManyPhoneEntry } from "../Dto/Request/updateReq";
+import { manyUpdateResponse } from "../Dto/Response/updateRes";
+import { UpdatePhoneEntry } from "../Dto/Request/updateReq";
+import { manyEntry } from "../Dto/Request/createReq";
+import { manyResponse } from "../Dto/Response/createRes";
 
-class Services {
-  async get(): Promise<any> {
-    try {
-      logger.info("getting");
-      return await repo.getData(dir);
-    } catch (err: any) {
-      throw err;
-    }
-  }
-
-  async post(body: PhoneEntry): Promise<any> {
-    try {
-      logger.info("adding");
-      return await repo.addData(body, dir);
-    } catch (err: any) {
-      throw err;
-    }
-  }
-
-  async patch(id: string, body: UpdatePhoneEntry): Promise<any> {
-    try {
-      logger.info("updating");
-      return await repo.updateData(id, body, dir);
-    } catch (err: any) {
-      throw err;
-    }
-  }
-
-  async del(id: string): Promise<any> {
-    try {
-      logger.info("deleting");
-      return await repo.deleteData(id, dir);
-    } catch (err: any) {
-      throw err;
-    }
-  }
+export interface IServices {
+  get: () => Promise<GetResponse[] | undefined>;
+  post: (body: PhoneEntry) => Promise<CreateResponse | undefined>;
+  patch: (
+    id: string,
+    body: UpdatePhoneEntry
+  ) => Promise<UpdateResponse | undefined>;
+  del: (id: string) => Promise<{ delete: string } | undefined>;
+  postMany: (body: manyEntry[]) => Promise<manyResponse | undefined>;
+  patchMany: (
+    body: UpdateManyPhoneEntry[]
+  ) => Promise<manyUpdateResponse | undefined>;
+  getbyid: (id: string) => Promise<GetResponse | undefined | null>;
+  paginationget: (
+    page: number,
+    limit: number
+  ) => Promise<GetResponse[] | undefined>;
 }
-
-export default Services;

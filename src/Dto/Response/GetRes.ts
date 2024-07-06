@@ -1,12 +1,15 @@
-interface ContactInfo {
+import { Types } from "mongoose";
+
+type ContactInfo = {
   type: string;
-  numbers: number;
-}
-export interface GetResponse {
+  number: number;
+};
+export type GetResponse = {
+  _id: Types.ObjectId;
   name: string;
   numbers: ContactInfo[];
   work: string;
   email: string;
-  created_time: string;
-  updated_time: string;
-}
+  created_time: Date;
+  updated_time: Date;
+};
