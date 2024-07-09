@@ -1,11 +1,22 @@
+// import { UpdateManyPhoneEntry as UpdatePhoneEntry } from "../Request/updateReq";
+import { GetResponse } from "./getRes";
+
 export type UpdateResponse = {
   message: string;
-  data: {
-    updated_id?: string;
-    name?: string;
-  };
+  data: GetResponse;
+};
+
+type BulkWriteResult = {
+  insertedCount: number;
+  matchedCount: number;
+  modifiedCount: number;
+  deletedCount: number;
+  upsertedCount: number;
+  upsertedIds: {};
+  insertedIds: {};
 };
 
 export type manyUpdateResponse = {
-  savedData: Record<string, UpdateResponse>;
+  message: string;
+  data: BulkWriteResult;
 };

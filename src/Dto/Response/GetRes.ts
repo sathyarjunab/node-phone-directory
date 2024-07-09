@@ -13,3 +13,17 @@ export type GetResponse = {
   created_time: Date;
   updated_time: Date;
 };
+
+type metatype = {
+  metadata: {
+    totalCount: number;
+    pagenum: number;
+    pageSize: number;
+  };
+  data: GetResponse[];
+};
+
+export type paginationresponse = {
+  success: boolean;
+  articles: metatype;
+};

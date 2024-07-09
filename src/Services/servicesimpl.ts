@@ -2,8 +2,8 @@ import schemarepo from "../repository/impl/repositoryimpl";
 import logger from "../Core/logger";
 import dir from "../repository/schemas";
 import { GetResponse } from "../Dto/Response/getRes";
+import { Response } from "../Dto/Response/createRes";
 import { PhoneEntry } from "../Dto/Request/createReq";
-import { CreateResponse } from "../Dto/Response/createRes";
 import { UpdateResponse } from "../Dto/Response/updateRes";
 import { UpdateManyPhoneEntry } from "../Dto/Request/updateReq";
 import { manyUpdateResponse } from "../Dto/Response/updateRes";
@@ -11,6 +11,7 @@ import { UpdatePhoneEntry } from "../Dto/Request/updateReq";
 import { IServices } from "./services";
 import { manyEntry } from "../Dto/Request/createReq";
 import { manyResponse } from "../Dto/Response/createRes";
+import { paginationresponse } from "../Dto/Response/getRes";
 
 class Services implements IServices {
   private repo: schemarepo;
@@ -29,7 +30,7 @@ class Services implements IServices {
     }
   }
 
-  async post(body: PhoneEntry): Promise<CreateResponse | undefined> {
+  async post(body: PhoneEntry): Promise<Response | undefined> {
     try {
       logger.info("adding in process");
       let addedobject = await this.repo.addData(body, dir);
@@ -56,7 +57,7 @@ class Services implements IServices {
     }
   }
 
-  async del(id: string): Promise<{ delete: string } | undefined> {
+  async del(id: string): Promise<{ message: string } | undefined> {
     try {
       logger.info("deleting");
       let deleobj = await this.repo.deleteData(id, dir);
@@ -105,9 +106,9 @@ class Services implements IServices {
   }
 
   async paginationget(
-    page: number,
-    limit: number
-  ): Promise<GetResponse[] | undefined> {
+    page: string | undefined,
+    limit: string | undefined
+  ): Promise<paginationresponse | undefined> {
     try {
       logger.info("getting all the info");
       let data = await this.repo.paginationGet(page, limit, dir);

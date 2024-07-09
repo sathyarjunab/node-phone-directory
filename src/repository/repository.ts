@@ -1,14 +1,14 @@
 import { Document, Model, Types } from "mongoose";
-
-import { CreateResponse } from "../Dto/Response/createRes";
 import { UpdateResponse } from "../Dto/Response/updateRes";
 import { PhoneEntry } from "../Dto/Request/createReq";
 import { GetResponse } from "../Dto/Response/getRes";
 import { manyUpdateResponse } from "../Dto/Response/updateRes";
 import { UpdateManyPhoneEntry } from "../Dto/Request/updateReq";
+import { Response } from "../Dto/Response/createRes";
 import { UpdatePhoneEntry } from "../Dto/Request/updateReq";
 import { manyEntry } from "../Dto/Request/createReq";
 import { manyResponse } from "../Dto/Response/createRes";
+import { paginationresponse } from "../Dto/Response/getRes";
 
 export type ContactInfo = {
   type: string;
@@ -26,14 +26,11 @@ export type DataDocument = Document & {
 };
 
 export interface Repo {
-  // returnScema: (
-  //   savedDataArray: UpdateResponse[] | CreateResponse[]
-  // ) => Promise<manyUpdateResponse>;
   getData: (dir: Model<DataDocument>) => Promise<GetResponse[] | undefined>;
   addData: (
     body: PhoneEntry,
     dir: Model<DataDocument>
-  ) => Promise<CreateResponse | undefined>;
+  ) => Promise<Response | undefined>;
   updateData: (
     id: string,
     body: UpdatePhoneEntry,
@@ -42,7 +39,7 @@ export interface Repo {
   deleteData: (
     id: string,
     dir: Model<DataDocument>
-  ) => Promise<{ delete: string } | undefined>;
+  ) => Promise<{ message: string } | undefined>;
 
   addMany: (
     body: manyEntry[],
@@ -58,8 +55,8 @@ export interface Repo {
     dir: Model<DataDocument>
   ) => Promise<GetResponse | undefined | null>;
   paginationGet: (
-    page: number,
-    limit: number,
+    page: string | undefined,
+    limit: string | undefined,
     dir: Model<DataDocument>
-  ) => Promise<GetResponse[] | undefined>;
+  ) => Promise<paginationresponse | undefined>;
 }

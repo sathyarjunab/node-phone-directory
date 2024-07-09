@@ -1,11 +1,11 @@
-export type CreateResponse = {
+import { GetResponse } from "./getRes";
+
+export type Response = {
   message: string;
-  data: {
-    id: string;
-    name: string;
-  };
+  data: GetResponse;
 };
 
 export type manyResponse = {
-  savedData: Record<string, CreateResponse>;
+  message: string;
+  data: GetResponse[];
 };

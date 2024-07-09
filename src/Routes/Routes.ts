@@ -37,7 +37,7 @@ class Route {
       const result = await service.post(body);
       res.status(201).json(result);
     } catch (err: any) {
-      logger.error(err.message);
+      logger.error(err);
       res.status(500).json({ error: err.message });
     }
   }
@@ -96,8 +96,10 @@ class Route {
   }
   async paginationget(req: Request, res: Response): Promise<void> {
     try {
-      const { page, limit } = req.query;
-      const data = await service.paginationget(Number(page), Number(limit));
+      let { page, limit } = req.query;
+      let pagestr = page?.toString();
+      let limitst = limit?.toString();
+      const data = await service.paginationget(pagestr, limitst);
       res.status(200).json(data);
     } catch (err: any) {
       logger.info(err);
