@@ -20,15 +20,19 @@
   },
   "homepage": "https://github.com/sathyarjunab/node-phone-directory#readme",
   "dependencies": {
+    "@types/uuid": "^10.0.0",
     "body-parser": "^1.20.2",
+    "continuation-local-storage": "^3.2.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "mongoose": "^8.4.1",
+    "uuid": "^10.0.0",
     "winston": "^3.13.0"
   },
   "devDependencies": {
     "@ljharb/tsconfig": "^0.2.0",
+    "@types/continuation-local-storage": "^3.2.7",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "nodemon": "^3.1.4",

@@ -2,13 +2,13 @@ import express from "express";
 import { Response, Request } from "express";
 
 import logger from "../Core/logger";
-import { PhoneEntry } from "../Dto/Request/createReq";
-import { UpdatePhoneEntry } from "../Dto/Request/updateReq";
-import { UpdateManyPhoneEntry } from "../Dto/Request/updateReq";
+import { PhoneEntry } from "../Dto/Request/createreq";
+import { UpdatePhoneEntry } from "../Dto/Request/updatereq";
+import { UpdateManyPhoneEntry } from "../Dto/Request/updatereq";
 import Services from "../Services/servicesimpl";
 
-let service = new Services();
-let router = express.Router();
+const service = new Services();
+const router = express.Router();
 
 class Route {
   constructor() {
@@ -18,27 +18,27 @@ class Route {
     router.delete("/delete/:id", this.delete);
     router.post("/addmany", this.postMany);
     router.patch("/updatemany", this.patchMany);
-    router.get("/getbyid/:id", this.getbyid);
-    router.get("/paginationget", this.paginationget);
+    router.get("/getbyid/:id", this.getByid);
+    router.get("/paginationget", this.paginationGet);
   }
   async get(req: Request, res: Response): Promise<void> {
     try {
-      const result = await service.get();
+      const result = await service.get(req.requestId);
       res.status(200).json(result);
     } catch (err: any) {
       logger.error(err);
-      res.status(500).json({ error: err.message });
+      res.status(500).json({ error: err });
     }
   }
 
   async post(req: Request, res: Response): Promise<void> {
     try {
       let body = req.body as PhoneEntry;
-      const result = await service.post(body);
+      const result = await service.post(body, req.requestId);
       res.status(201).json(result);
     } catch (err: any) {
       logger.error(err);
-      res.status(500).json({ error: err.message });
+      res.status(500).json({ error: err });
     }
   }
 
@@ -46,64 +46,68 @@ class Route {
     try {
       let body = req.body as UpdatePhoneEntry;
       let id = req.params.id as string;
-      const result = await service.patch(id, body);
+      const result = await service.patch(id, body, req.requestId);
       res.status(200).json(result);
     } catch (err: any) {
       logger.error(err);
-      res.status(500).json({ error: err.message });
+      res.status(500).json({ error: err });
     }
   }
 
   async delete(req: Request, res: Response): Promise<void> {
     try {
       let id = req.params.id as string;
-      const result = await service.del(id);
+      const result = await service.del(id, req.requestId);
       res.status(200).json(result);
     } catch (err: any) {
       logger.error(err);
-      res.status(500).json({ error: err.message });
+      res.status(500).json({ error: err });
     }
   }
   async postMany(req: Request, res: Response): Promise<void> {
     try {
       let body = req.body as PhoneEntry[];
-      const data = await service.postMany(body);
+      const data = await service.postMany(body, req.requestId);
       res.status(200).json(data);
     } catch (err: any) {
       logger.error(err);
-      res.status(500).json({ error: err.message });
+      res.status(500).json({ error: err });
     }
   }
   async patchMany(req: Request, res: Response): Promise<void> {
     try {
       const updateDataArray: UpdateManyPhoneEntry[] = req.body;
-      const data = await service.patchMany(updateDataArray);
+      const data = await service.patchMany(updateDataArray, req.requestId);
       res.status(200).json(data);
     } catch (err: any) {
       logger.info(err);
-      res.status(500).json({ error: err.message });
+      res.status(500).json({ error: err });
     }
   }
-  async getbyid(req: Request, res: Response): Promise<void> {
+  async getByid(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params.id as string;
-      const data = await service.getbyid(id);
+      const data = await service.getByid(id, req.requestId);
       res.status(200).json(data);
     } catch (err: any) {
       logger.info(err);
-      res.status(500).json({ error: err.message });
+      res.status(500).json({ error: err });
     }
   }
-  async paginationget(req: Request, res: Response): Promise<void> {
+  async paginationGet(req: Request, res: Response): Promise<void> {
     try {
       let { page, limit } = req.query;
-      let pagestr = page?.toString();
-      let limitst = limit?.toString();
-      const data = await service.paginationget(pagestr, limitst);
+      let pageString = page?.toString();
+      let limitString = limit?.toString();
+      const data = await service.paginationGet(
+        pageString,
+        limitString,
+        req.requestId
+      );
       res.status(200).json(data);
     } catch (err: any) {
       logger.info(err);
-      res.status(500).json({ error: err.message });
+      res.status(500).json({ error: err });
     }
   }
   connect = () => {

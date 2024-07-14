@@ -1,25 +1,22 @@
-import { AnyBulkWriteOperation, Model, Types } from "mongoose";
+import { AnyBulkWriteOperation, Model } from "mongoose";
 import {
-  manyUpdateResponse,
+  ManyUpdateResponse,
   UpdateResponse,
-} from "../../Dto/Response/updateRes";
-import { PhoneEntry } from "../../Dto/Request/createReq";
-import { GetResponse } from "../../Dto/Response/getRes";
+} from "../../Dto/Response/updateres";
+import { PhoneEntry } from "../../Dto/Request/createreq";
+import { GetResponse } from "../../Dto/Response/getres";
 import {
   UpdateManyPhoneEntry,
   UpdatePhoneEntry,
-} from "../../Dto/Request/updateReq";
+} from "../../Dto/Request/updatereq";
 import { DataDocument, Repo } from "../repository";
-import { manyEntry } from "../../Dto/Request/createReq";
-import { manyResponse } from "../../Dto/Response/createRes";
-import { paginationresponse } from "../../Dto/Response/getRes";
-import { Response } from "../../Dto/Response/createRes";
-import { error } from "winston";
+import { ManyResponse } from "../../Dto/Response/createres";
+import { PaginationResponse } from "../../Dto/Response/getres";
+import { Response } from "../../Dto/Response/createres";
 
 class SchemaRepository implements Repo {
   async getData(dir: Model<DataDocument>): Promise<GetResponse[] | undefined> {
     const data = await dir.find().exec();
-    throw new Error("asfaga");
     return data;
   }
   async addData(body: PhoneEntry, dir: Model<DataDocument>): Promise<Response> {
@@ -36,10 +33,10 @@ class SchemaRepository implements Repo {
       created_time: now.toISOString(),
       updated_time: now.toISOString(),
     });
-    let SavedData = await newData.save();
+    let savedData = await newData.save();
     return {
-      message: "dataAdded",
-      data: SavedData,
+      message: "Data added",
+      data: savedData,
     };
   }
 
@@ -88,9 +85,9 @@ class SchemaRepository implements Repo {
   }
 
   async addMany(
-    body: manyEntry[],
+    body: PhoneEntry[],
     dir: Model<DataDocument>
-  ): Promise<manyResponse | undefined> {
+  ): Promise<ManyResponse | undefined> {
     let now = new Date();
     const savedDataArray = body.map((entry) => ({
       name: entry.name,
@@ -113,7 +110,7 @@ class SchemaRepository implements Repo {
   async updateMany(
     body: UpdateManyPhoneEntry[],
     dir: Model<DataDocument>
-  ): Promise<manyUpdateResponse | undefined> {
+  ): Promise<ManyUpdateResponse | undefined> {
     const now = new Date();
     const updateOperations: AnyBulkWriteOperation<DataDocument>[] = [];
 
@@ -153,15 +150,15 @@ class SchemaRepository implements Repo {
       data: result, //returning the bulkwrite result which is not the complete object we could return entire object if we want by bellow method
     };
     // or
-    // const ids = body.map((update) => update.id);
-    // const updatedDocs = await dir.find({ _id: { $in: ids } });
+    // const objectIds = body.map((update) => update.id);
+    // const updatedDocs = await dir.find({ _id: { $in: objectIds } });
 
     // return {
     //   message: "data updated",
     //   data: updatedDocs,
     // };
   }
-  async getbyId(
+  async getById(
     id: string,
     dir: Model<DataDocument>
   ): Promise<GetResponse | undefined | null> {
@@ -172,23 +169,23 @@ class SchemaRepository implements Repo {
     page: string | undefined,
     limit: string | undefined,
     dir: Model<DataDocument>
-  ): Promise<paginationresponse | undefined> {
-    let pagenum = parseInt(page as string, 10) || 1;
+  ): Promise<PaginationResponse | undefined> {
+    let pageNum = parseInt(page as string, 10) || 1;
     let pageSize = parseInt(limit as string, 10) || 6;
     const articles = await dir.aggregate([
       {
         $facet: {
-          metadata: [{ $count: "totalCount" }],
-          data: [{ $skip: (pagenum - 1) * pageSize }, { $limit: pageSize }],
+          metaData: [{ $count: "totalCount" }],
+          data: [{ $skip: (pageNum - 1) * pageSize }, { $limit: pageSize }],
         },
       },
     ]);
     return {
       success: true,
       articles: {
-        metadata: {
-          totalCount: articles[0].metadata[0].totalCount,
-          pagenum,
+        metaData: {
+          totalCount: articles[0].metaData[0].totalCount,
+          pageNum,
           pageSize,
         },
         data: articles[0].data,

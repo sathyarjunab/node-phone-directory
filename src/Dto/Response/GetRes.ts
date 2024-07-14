@@ -1,11 +1,9 @@
-import { Types } from "mongoose";
-
 type ContactInfo = {
   type: string;
   number: number;
 };
 export type GetResponse = {
-  _id: Types.ObjectId;
+  // _id: string;
   name: string;
   numbers: ContactInfo[];
   work: string;
@@ -14,16 +12,16 @@ export type GetResponse = {
   updated_time: Date;
 };
 
-type metatype = {
-  metadata: {
+type MetaType = {
+  metaData: {
     totalCount: number;
-    pagenum: number;
+    pageNum: number;
     pageSize: number;
   };
   data: GetResponse[];
 };
 
-export type paginationresponse = {
+export type PaginationResponse = {
   success: boolean;
-  articles: metatype;
+  articles: MetaType;
 };

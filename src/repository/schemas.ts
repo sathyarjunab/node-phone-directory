@@ -4,7 +4,6 @@ type ContactInfo = {
   number: number;
 };
 type DataDocument = Document & {
-  _id: Types.ObjectId;
   name: string;
   numbers: ContactInfo[];
   work: string;

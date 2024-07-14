@@ -1,14 +1,13 @@
-import { Document, Model, Types } from "mongoose";
-import { UpdateResponse } from "../Dto/Response/updateRes";
-import { PhoneEntry } from "../Dto/Request/createReq";
-import { GetResponse } from "../Dto/Response/getRes";
-import { manyUpdateResponse } from "../Dto/Response/updateRes";
-import { UpdateManyPhoneEntry } from "../Dto/Request/updateReq";
-import { Response } from "../Dto/Response/createRes";
-import { UpdatePhoneEntry } from "../Dto/Request/updateReq";
-import { manyEntry } from "../Dto/Request/createReq";
-import { manyResponse } from "../Dto/Response/createRes";
-import { paginationresponse } from "../Dto/Response/getRes";
+import { Document, Model } from "mongoose";
+import { UpdateResponse } from "../Dto/Response/updateres";
+import { PhoneEntry } from "../Dto/Request/createreq";
+import { GetResponse } from "../Dto/Response/getres";
+import { ManyUpdateResponse } from "../Dto/Response/updateres";
+import { UpdateManyPhoneEntry } from "../Dto/Request/updatereq";
+import { Response } from "../Dto/Response/createres";
+import { UpdatePhoneEntry } from "../Dto/Request/updatereq";
+import { ManyResponse } from "../Dto/Response/createres";
+import { PaginationResponse } from "../Dto/Response/getres";
 
 export type ContactInfo = {
   type: string;
@@ -16,7 +15,6 @@ export type ContactInfo = {
 };
 
 export type DataDocument = Document & {
-  _id: Types.ObjectId;
   name: string;
   numbers: ContactInfo[];
   work: string;
@@ -42,15 +40,15 @@ export interface Repo {
   ) => Promise<{ message: string } | undefined>;
 
   addMany: (
-    body: manyEntry[],
+    body: PhoneEntry[],
     dir: Model<DataDocument>
-  ) => Promise<manyResponse | undefined>;
+  ) => Promise<ManyResponse | undefined>;
 
   updateMany: (
     body: UpdateManyPhoneEntry[],
     dir: Model<DataDocument>
-  ) => Promise<manyUpdateResponse | undefined>;
-  getbyId: (
+  ) => Promise<ManyUpdateResponse | undefined>;
+  getById: (
     id: string,
     dir: Model<DataDocument>
   ) => Promise<GetResponse | undefined | null>;
@@ -58,5 +56,5 @@ export interface Repo {
     page: string | undefined,
     limit: string | undefined,
     dir: Model<DataDocument>
-  ) => Promise<paginationresponse | undefined>;
+  ) => Promise<PaginationResponse | undefined>;
 }

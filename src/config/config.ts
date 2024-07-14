@@ -2,9 +2,9 @@ import dataChunks from "../Constants/constants";
 
 let connectionString = [
   "mongodb+srv://",
-  dataChunks.DBUser,
+  dataChunks.dbUser,
   ":",
-  dataChunks.DBPass,
+  dataChunks.dbPass,
   "@cluster0.br6n1f3.mongodb.net/",
 ].join("");
 

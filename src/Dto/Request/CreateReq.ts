@@ -6,5 +6,3 @@ export type PhoneEntry = {
   mobile_number: number;
   teliphone_number: number;
 };
-
-export type manyEntry = PhoneEntry & {};

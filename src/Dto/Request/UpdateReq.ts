@@ -1,4 +1,3 @@
-import { Types } from "mongoose";
 export type UpdatePhoneEntry = {
   name?: string;
   work?: string;
@@ -9,5 +8,5 @@ export type UpdatePhoneEntry = {
 };
 
 export type UpdateManyPhoneEntry = UpdatePhoneEntry & {
-  id: Types.ObjectId;
+  id: string;
 };

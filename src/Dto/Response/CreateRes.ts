@@ -1,11 +1,11 @@
-import { GetResponse } from "./getRes";
+import { GetResponse } from "./getres";
 
 export type Response = {
   message: string;
   data: GetResponse;
 };
 
-export type manyResponse = {
+export type ManyResponse = {
   message: string;
   data: GetResponse[];
 };

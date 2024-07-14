@@ -1,123 +1,134 @@
-import schemarepo from "../repository/impl/repositoryimpl";
+import SchemaRepo from "../Repository/Impl/repositoryimpl";
 import logger from "../Core/logger";
-import dir from "../repository/schemas";
-import { GetResponse } from "../Dto/Response/getRes";
-import { Response } from "../Dto/Response/createRes";
-import { PhoneEntry } from "../Dto/Request/createReq";
-import { UpdateResponse } from "../Dto/Response/updateRes";
-import { UpdateManyPhoneEntry } from "../Dto/Request/updateReq";
-import { manyUpdateResponse } from "../Dto/Response/updateRes";
-import { UpdatePhoneEntry } from "../Dto/Request/updateReq";
-import { IServices } from "./services";
-import { manyEntry } from "../Dto/Request/createReq";
-import { manyResponse } from "../Dto/Response/createRes";
-import { paginationresponse } from "../Dto/Response/getRes";
+import dir from "../Repository/schemas";
+import { GetResponse } from "../Dto/Response/getres";
+import { Response } from "../Dto/Response/createres";
+import { PhoneEntry } from "../Dto/Request/createreq";
+import { UpdateResponse } from "../Dto/Response/updateres";
+import { UpdateManyPhoneEntry } from "../Dto/Request/updatereq";
+import { ManyUpdateResponse } from "../Dto/Response/updateres";
+import { UpdatePhoneEntry } from "../Dto/Request/updatereq";
+import { implePhoneBookService } from "./services";
+import { ManyResponse } from "../Dto/Response/createres";
+import { PaginationResponse } from "../Dto/Response/getres";
 
-class Services implements IServices {
-  private repo: schemarepo;
+class phoneBookService implements implePhoneBookService {
+  private repo: SchemaRepo;
   constructor() {
-    this.repo = new schemarepo();
+    this.repo = new SchemaRepo();
   }
-  async get(): Promise<GetResponse[] | undefined> {
+  async get(reqid: string): Promise<GetResponse[] | undefined> {
     try {
-      logger.info("getting the data");
+      logger.info(`getting all data. ${reqid}`);
       let data = await this.repo.getData(dir);
-      logger.info("data gathered");
+      logger.info(`${data?.length} contacts are collected in total. ${reqid}`);
       return data;
     } catch (err: any) {
-      logger.error("failed to get info");
+      logger.error(`failed to get info ${reqid}`);
       throw err;
     }
   }
 
-  async post(body: PhoneEntry): Promise<Response | undefined> {
+  async post(body: PhoneEntry, reqid: string): Promise<Response | undefined> {
     try {
-      logger.info("adding in process");
-      let addedobject = await this.repo.addData(body, dir);
-      logger.info("contact added");
-      return addedobject;
+      logger.info(`adding in process ${reqid}`);
+      let addedObject = await this.repo.addData(body, dir);
+      logger.info(`contact added ${reqid}`);
+      return addedObject;
     } catch (err: any) {
-      logger.error("failed to add the info");
+      logger.error(`failed to add the info ${reqid}`);
       throw err;
     }
   }
 
   async patch(
     id: string,
-    body: UpdatePhoneEntry
+    body: UpdatePhoneEntry,
+    reqid: string
   ): Promise<UpdateResponse | undefined> {
     try {
-      logger.info("updating in process");
+      logger.info(`updating in process ${reqid}`);
       let updatedData = await this.repo.updateData(id, body, dir);
-      logger.info("successfully updated");
+      logger.info(`successfully updated ${reqid}`);
       return updatedData;
     } catch (err: any) {
-      logger.error("failed to update info");
+      logger.error(`failed to update info ${reqid}`);
       throw err;
     }
   }
 
-  async del(id: string): Promise<{ message: string } | undefined> {
+  async del(
+    id: string,
+    reqid: string
+  ): Promise<{ message: string } | undefined> {
     try {
-      logger.info("deleting");
-      let deleobj = await this.repo.deleteData(id, dir);
-      logger.info("successfully deleted");
-      return deleobj;
+      logger.info(`deleting ${reqid}`);
+      let deleObj = await this.repo.deleteData(id, dir);
+      logger.info(`successfully deleted ${reqid}`);
+      return deleObj;
     } catch (err: any) {
-      logger.error("failed to delete info");
+      logger.error(`failed to delete info ${reqid}`);
       throw err;
     }
   }
-  async postMany(body: manyEntry[]): Promise<manyResponse | undefined> {
+  async postMany(
+    body: PhoneEntry[],
+    reqid: string
+  ): Promise<ManyResponse | undefined> {
     try {
-      logger.info("adding all the data");
-      let alldata = await this.repo.addMany(body, dir);
-      logger.info("added all the data");
-      return alldata;
+      logger.info(`adding all the data ${reqid}`);
+      let allData = await this.repo.addMany(body, dir);
+      logger.info(`added all the data ${reqid}`);
+      return allData;
     } catch (err: any) {
-      logger.error("failed to add all the info");
+      logger.error(`failed to add all the info ${reqid}`);
       throw err;
     }
   }
   async patchMany(
-    body: UpdateManyPhoneEntry[]
-  ): Promise<manyUpdateResponse | undefined> {
+    body: UpdateManyPhoneEntry[],
+    reqid: string
+  ): Promise<ManyUpdateResponse | undefined> {
     try {
-      logger.info("updating all the info");
+      logger.info(`updating all the info ${reqid}`);
       let data = await this.repo.updateMany(body, dir);
-      logger.info("updated all the data");
+      logger.info(`updated all the data ${reqid}`);
       return data;
     } catch (err: any) {
-      logger.error("failed to update all the info");
+      logger.error(`failed to update all the info ${reqid}`);
       throw err;
     }
   }
 
-  async getbyid(id: string): Promise<GetResponse | undefined | null> {
+  async getByid(
+    id: string,
+    reqid: string
+  ): Promise<GetResponse | undefined | null> {
     try {
-      logger.info("getting the specific data");
-      let data = await this.repo.getbyId(id, dir);
-      logger.info("data successfully obtained");
+      logger.info(`getting the specific data ${reqid}`);
+      let data = await this.repo.getById(id, dir);
+      logger.info(`data successfully obtained ${reqid}`);
       return data;
     } catch (err: any) {
-      logger.error("failed to get the info");
+      logger.error(`failed to get the info ${reqid}`);
       throw err;
     }
   }
 
-  async paginationget(
+  async paginationGet(
     page: string | undefined,
-    limit: string | undefined
-  ): Promise<paginationresponse | undefined> {
+    limit: string | undefined,
+    reqid: string
+  ): Promise<PaginationResponse | undefined> {
     try {
-      logger.info("getting all the info");
+      logger.info(`getting all the info ${reqid}`);
       let data = await this.repo.paginationGet(page, limit, dir);
-      logger.info("all the data successfully obtained");
+      logger.info(`all the data successfully obtained ${reqid}`);
       return data;
     } catch (err: any) {
-      logger.error("failed to get all the info");
+      logger.error(`failed to get all the info ${reqid}`);
       throw err;
     }
   }
 }
-export default Services;
+export default phoneBookService;

@@ -22,7 +22,7 @@ class Logger {
             format.timestamp(),
             format.colorize(),
             format.printf(({ level, message, timestamp, stack, ...meta }) => {
-              const baseLog = `${timestamp} [${level}]: ${message}`; //2024-06-15T18:04:39.381Z [info]: CONNECTED
+              const baseLog = `${timestamp} [${level}]: ${message}`; // Example: 2024-07-12T12:34:56.789Z [info]: Message
               const stackLog = stack ? `\n${stack}` : "";
               const metaLog = Object.keys(meta).length
                 ? `\n${JSON.stringify(meta, null, 2)}`
@@ -33,6 +33,27 @@ class Logger {
         }),
       ],
     });
+
+    // Override the default console log format to include full error details
+    const consoleFormat = format.printf(
+      ({ level, message, timestamp, stack, ...info }) => {
+        let logMessage = `${timestamp} [${level}]: ${message}`;
+        if (stack) {
+          logMessage += `\n${stack}`;
+        }
+        if (Object.keys(info).length > 0) {
+          logMessage += `\n${JSON.stringify(info, null, 2)}`;
+        }
+        return logMessage;
+      }
+    );
+
+    // Apply the new format to the console transport
+    this.logger.transports[0].format = format.combine(
+      format.timestamp(),
+      format.colorize(),
+      consoleFormat
+    );
   }
 }
 

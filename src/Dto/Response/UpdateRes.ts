@@ -1,5 +1,5 @@
 // import { UpdateManyPhoneEntry as UpdatePhoneEntry } from "../Request/updateReq";
-import { GetResponse } from "./getRes";
+import { GetResponse } from "./getres";
 
 export type UpdateResponse = {
   message: string;
@@ -16,7 +16,7 @@ type BulkWriteResult = {
   insertedIds: {};
 };
 
-export type manyUpdateResponse = {
+export type ManyUpdateResponse = {
   message: string;
   data: BulkWriteResult;
 };
