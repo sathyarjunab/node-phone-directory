@@ -9,29 +9,20 @@ import { ManyResponse } from "../dto/response/createres";
 import { PaginationResponse } from "../dto/response/getres";
 
 export interface implePhoneBookService {
-  get: (reqid: string) => Promise<GetResponse[] | undefined>;
-  post: (body: PhoneEntry, reqid: string) => Promise<Response | undefined>;
+  get: () => Promise<GetResponse[] | undefined>;
+  post: (body: PhoneEntry) => Promise<Response | undefined>;
   patch: (
     id: string,
-    body: UpdatePhoneEntry,
-    reqid: string
+    body: UpdatePhoneEntry
   ) => Promise<UpdateResponse | undefined>;
-  del: (id: string, reqid: string) => Promise<{ message: string } | undefined>;
-  postMany: (
-    body: PhoneEntry[],
-    reqid: string
-  ) => Promise<ManyResponse | undefined>;
+  del: (id: string) => Promise<{ message: string } | undefined>;
+  postMany: (body: PhoneEntry[]) => Promise<ManyResponse | undefined>;
   patchMany: (
-    body: UpdateManyPhoneEntry[],
-    reqid: string
+    body: UpdateManyPhoneEntry[]
   ) => Promise<ManyUpdateResponse | undefined>;
-  getByid: (
-    id: string,
-    reqid: string
-  ) => Promise<GetResponse | undefined | null>;
+  getByid: (id: string) => Promise<GetResponse | undefined | null>;
   paginationGet: (
     page: string | undefined,
-    limit: string | undefined,
-    reqid: string
+    limit: string | undefined
   ) => Promise<PaginationResponse | undefined>;
 }

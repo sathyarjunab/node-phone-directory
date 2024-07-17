@@ -33,11 +33,11 @@ class Mapper implements MapperInterface {
           name: entry.name,
           work: entry.work,
           numbers: [
-            { type: "phone_number", number: Number(entry.phone_number) },
-            { type: "mobile_number", number: Number(entry.mobile_number) },
+            { type: "phone_number", number: entry.phone_number },
+            { type: "mobile_number", number: entry.mobile_number },
             {
               type: "telephone_number",
-              number: Number(entry.telephone_number),
+              number: entry.telephone_number,
             },
           ],
           email: entry.email,

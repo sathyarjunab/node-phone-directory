@@ -53,9 +53,9 @@ class SchemaRepository implements Repo {
           name: body.name,
           work: body.work,
           numbers: [
-            { type: "phone_number", number: Number(body.phone_number) },
-            { type: "mobile_number", number: Number(body.mobile_number) },
-            { type: "telephone_number", number: Number(body.telephone_number) },
+            { type: "phone_number", number: body.phone_number },
+            { type: "mobile_number", number: body.mobile_number },
+            { type: "telephone_number", number: body.telephone_number },
           ],
           email: body.email,
           updated_time: now.toISOString(),
@@ -121,7 +121,7 @@ class SchemaRepository implements Repo {
         arrayFilters.push({ "mobileElem.type": "mobile_number" });
       }
       if (updates.telephone_number !== undefined) {
-        updateSet["numbers.$[teliphoneElem].number"] = updates.telephone_number;
+        updateSet["numbers.$[telephoneElem].number"] = updates.telephone_number;
         arrayFilters.push({ "telephoneElem.type": "telephone_number" });
       }
 

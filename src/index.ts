@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 import cors from "cors";
 import bodyParser from "body-parser";
 
-import { requestIdMiddleware } from "./middleware/middleware";
 import logger from "./core/logger";
 import connectionString from "./config/config";
 import Route from "./routes/routes";
@@ -23,8 +22,6 @@ declare global {
     }
   }
 }
-
-app.use(requestIdMiddleware as express.RequestHandler);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 

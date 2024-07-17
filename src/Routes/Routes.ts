@@ -23,7 +23,7 @@ class Route {
   }
   async get(req: Request, res: Response): Promise<void> {
     try {
-      const result = await service.get(req.requestId);
+      const result = await service.get();
       res.status(200).json(result);
     } catch (err: any) {
       logger.error(err);
@@ -34,7 +34,7 @@ class Route {
   async post(req: Request, res: Response): Promise<void> {
     try {
       let body = req.body as PhoneEntry;
-      const result = await service.post(body, req.requestId);
+      const result = await service.post(body);
       res.status(201).json(result);
     } catch (err: any) {
       logger.error(err);
@@ -46,7 +46,7 @@ class Route {
     try {
       let body = req.body as UpdatePhoneEntry;
       let id = req.params.id as string;
-      const result = await service.patch(id, body, req.requestId);
+      const result = await service.patch(id, body);
       res.status(200).json(result);
     } catch (err: any) {
       logger.error(err);
@@ -57,7 +57,7 @@ class Route {
   async delete(req: Request, res: Response): Promise<void> {
     try {
       let id = req.params.id as string;
-      const result = await service.del(id, req.requestId);
+      const result = await service.del(id);
       res.status(200).json(result);
     } catch (err: any) {
       logger.error(err);
@@ -67,7 +67,7 @@ class Route {
   async postMany(req: Request, res: Response): Promise<void> {
     try {
       let body = req.body as PhoneEntry[];
-      const data = await service.postMany(body, req.requestId);
+      const data = await service.postMany(body);
       res.status(200).json(data);
     } catch (err: any) {
       logger.error(err);
@@ -77,7 +77,7 @@ class Route {
   async patchMany(req: Request, res: Response): Promise<void> {
     try {
       const updateDataArray: UpdateManyPhoneEntry[] = req.body;
-      const data = await service.patchMany(updateDataArray, req.requestId);
+      const data = await service.patchMany(updateDataArray);
       res.status(200).json(data);
     } catch (err: any) {
       logger.info(err);
@@ -87,7 +87,7 @@ class Route {
   async getByid(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params.id as string;
-      const data = await service.getByid(id, req.requestId);
+      const data = await service.getByid(id);
       res.status(200).json(data);
     } catch (err: any) {
       logger.info(err);
@@ -99,11 +99,7 @@ class Route {
       let { page, limit } = req.query;
       let pageString = page?.toString();
       let limitString = limit?.toString();
-      const data = await service.paginationGet(
-        pageString,
-        limitString,
-        req.requestId
-      );
+      const data = await service.paginationGet(pageString, limitString);
       res.status(200).json(data);
     } catch (err: any) {
       logger.info(err);
