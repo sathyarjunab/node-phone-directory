@@ -26,5 +26,3 @@ const directorySchema = new Schema<DataDocument>({
 });
 
 export const dir = model<DataDocument>("dir", directorySchema);
-
-// export default dir;

@@ -1,4 +1,3 @@
-// import { UpdateManyPhoneEntry as UpdatePhoneEntry } from "../Request/updateReq";
 import { GetResponse } from "./getres";
 
 export type UpdateResponse = {
