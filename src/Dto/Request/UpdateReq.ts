@@ -4,7 +4,7 @@ export type UpdatePhoneEntry = {
   email?: string;
   phone_number?: number;
   mobile_number?: number;
-  teliphone_number?: number;
+  telephone_number?: number;
 };
 
 export type UpdateManyPhoneEntry = UpdatePhoneEntry & {

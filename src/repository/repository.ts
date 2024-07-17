@@ -1,27 +1,15 @@
 import { Document, Model } from "mongoose";
-import { UpdateResponse } from "../Dto/Response/updateres";
-import { PhoneEntry } from "../Dto/Request/createreq";
-import { GetResponse } from "../Dto/Response/getres";
-import { ManyUpdateResponse } from "../Dto/Response/updateres";
-import { UpdateManyPhoneEntry } from "../Dto/Request/updatereq";
-import { Response } from "../Dto/Response/createres";
-import { UpdatePhoneEntry } from "../Dto/Request/updatereq";
-import { ManyResponse } from "../Dto/Response/createres";
-import { PaginationResponse } from "../Dto/Response/getres";
 
-export type ContactInfo = {
-  type: string;
-  number: number;
-};
-
-export type DataDocument = Document & {
-  name: string;
-  numbers: ContactInfo[];
-  work: string;
-  email: string;
-  created_time: Date;
-  updated_time: Date;
-};
+import { DataDocument } from "./schemas";
+import { UpdateResponse } from "../dto/response/updateres";
+import { PhoneEntry } from "../dto/request/createreq";
+import { GetResponse } from "../dto/response/getres";
+import { ManyUpdateResponse } from "../dto/response/updateres";
+import { UpdateManyPhoneEntry } from "../dto/request/updatereq";
+import { Response } from "../dto/response/createres";
+import { UpdatePhoneEntry } from "../dto/request/updatereq";
+import { ManyResponse } from "../dto/response/createres";
+import { PaginationResponse } from "../dto/response/getres";
 
 export interface Repo {
   getData: (dir: Model<DataDocument>) => Promise<GetResponse[] | undefined>;

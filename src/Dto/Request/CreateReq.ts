@@ -4,5 +4,5 @@ export type PhoneEntry = {
   email: string;
   phone_number: number;
   mobile_number: number;
-  teliphone_number: number;
+  telephone_number: number;
 };

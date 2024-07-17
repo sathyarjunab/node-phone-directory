@@ -3,10 +3,10 @@ import mongoose from "mongoose";
 import cors from "cors";
 import bodyParser from "body-parser";
 
-import { requestIdMiddleware } from "./Middleware/middleware";
-import logger from "./Core/logger";
-import connectionString from "./Config/config";
-import Route from "./Routes/routes";
+import { requestIdMiddleware } from "./middleware/middleware";
+import logger from "./core/logger";
+import connectionString from "./config/config";
+import Route from "./routes/routes";
 
 let crudRoutes = new Route().connect();
 

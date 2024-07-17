@@ -3,13 +3,13 @@ type ContactInfo = {
   number: number;
 };
 export type GetResponse = {
-  // _id: string;
+  _id: string;
   name: string;
   numbers: ContactInfo[];
   work: string;
   email: string;
-  created_time: Date;
-  updated_time: Date;
+  createdTime: Date;
+  updatedTime: Date;
 };
 
 type MetaType = {

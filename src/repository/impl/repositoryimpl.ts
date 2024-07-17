@@ -1,42 +1,41 @@
-import { AnyBulkWriteOperation, Model } from "mongoose";
+import { AnyBulkWriteOperation, Model, Document } from "mongoose";
+
+import { DataDocument } from "../schemas";
 import {
   ManyUpdateResponse,
   UpdateResponse,
-} from "../../Dto/Response/updateres";
-import { PhoneEntry } from "../../Dto/Request/createreq";
-import { GetResponse } from "../../Dto/Response/getres";
+} from "../../dto/response/updateres";
+import { PhoneEntry } from "../../dto/request/createreq";
+import { GetResponse } from "../../dto/response/getres";
 import {
   UpdateManyPhoneEntry,
   UpdatePhoneEntry,
-} from "../../Dto/Request/updatereq";
-import { DataDocument, Repo } from "../repository";
-import { ManyResponse } from "../../Dto/Response/createres";
-import { PaginationResponse } from "../../Dto/Response/getres";
-import { Response } from "../../Dto/Response/createres";
+} from "../../dto/request/updatereq";
+import { Repo } from "../repository";
+import { ManyResponse } from "../../dto/response/createres";
+import { PaginationResponse } from "../../dto/response/getres";
+import { Response } from "../../dto/response/createres";
+import Mapper from "../../mapper/maperimpl";
 
 class SchemaRepository implements Repo {
+  private map;
+  constructor() {
+    this.map = new Mapper();
+  }
   async getData(dir: Model<DataDocument>): Promise<GetResponse[] | undefined> {
     const data = await dir.find().exec();
-    return data;
+    let toGetData = this.map.dataFormatter(data);
+    return toGetData;
   }
   async addData(body: PhoneEntry, dir: Model<DataDocument>): Promise<Response> {
-    let now = new Date();
-    const newData = new dir({
-      name: body.name,
-      work: body.work,
-      numbers: [
-        { type: "phone_number", number: Number(body.phone_number) },
-        { type: "mobile_number", number: Number(body.mobile_number) },
-        { type: "teliphone_number", number: Number(body.teliphone_number) },
-      ],
-      email: body.email,
-      created_time: now.toISOString(),
-      updated_time: now.toISOString(),
-    });
+    let formate = [body];
+    let obj = this.map.populateDatabaseTemplate(formate)[0];
+    const newData = new dir(obj);
     let savedData = await newData.save();
+    let modifiedResult = this.map.dataFormatter([savedData])[0];
     return {
       message: "Data added",
-      data: savedData,
+      data: modifiedResult,
     };
   }
 
@@ -56,7 +55,7 @@ class SchemaRepository implements Repo {
           numbers: [
             { type: "phone_number", number: Number(body.phone_number) },
             { type: "mobile_number", number: Number(body.mobile_number) },
-            { type: "teliphone_number", number: Number(body.teliphone_number) },
+            { type: "telephone_number", number: Number(body.telephone_number) },
           ],
           email: body.email,
           updated_time: now.toISOString(),
@@ -65,9 +64,10 @@ class SchemaRepository implements Repo {
       )
       .exec();
     if (updatedData) {
+      let modifiedResult = this.map.dataFormatter([updatedData])[0];
       return {
         message: "updated",
-        data: updatedData,
+        data: modifiedResult,
       };
     } else {
       throw new Error(
@@ -89,22 +89,12 @@ class SchemaRepository implements Repo {
     dir: Model<DataDocument>
   ): Promise<ManyResponse | undefined> {
     let now = new Date();
-    const savedDataArray = body.map((entry) => ({
-      name: entry.name,
-      work: entry.work,
-      numbers: [
-        { type: "phone_number", number: Number(entry.phone_number) },
-        { type: "mobile_number", number: Number(entry.mobile_number) },
-        { type: "teliphone_number", number: Number(entry.teliphone_number) },
-      ],
-      email: entry.email,
-      created_time: now,
-      updated_time: now,
-    }));
+    const savedDataArray = this.map.populateDatabaseTemplate(body);
     const savedData = await dir.insertMany(savedDataArray);
+    let modifiedResult = this.map.dataFormatter(savedData);
     return {
       message: "data added",
-      data: savedData,
+      data: modifiedResult,
     };
   }
   async updateMany(
@@ -130,9 +120,9 @@ class SchemaRepository implements Repo {
         updateSet["numbers.$[mobileElem].number"] = updates.mobile_number;
         arrayFilters.push({ "mobileElem.type": "mobile_number" });
       }
-      if (updates.teliphone_number !== undefined) {
-        updateSet["numbers.$[teliphoneElem].number"] = updates.teliphone_number;
-        arrayFilters.push({ "teliphoneElem.type": "teliphone_number" });
+      if (updates.telephone_number !== undefined) {
+        updateSet["numbers.$[teliphoneElem].number"] = updates.telephone_number;
+        arrayFilters.push({ "telephoneElem.type": "telephone_number" });
       }
 
       updateOperations.push({
@@ -162,8 +152,11 @@ class SchemaRepository implements Repo {
     id: string,
     dir: Model<DataDocument>
   ): Promise<GetResponse | undefined | null> {
-    const result = dir.findById(id);
-    return result;
+    const result = await dir.findById(id);
+    if (result) {
+      let modifiedResult = this.map.dataFormatter([result])[0];
+      return modifiedResult;
+    }
   }
   async paginationGet(
     page: string | undefined,
@@ -180,6 +173,7 @@ class SchemaRepository implements Repo {
         },
       },
     ]);
+    let modifiedResult = this.map.dataFormatter(articles[0].data);
     return {
       success: true,
       articles: {
@@ -188,7 +182,7 @@ class SchemaRepository implements Repo {
           pageNum,
           pageSize,
         },
-        data: articles[0].data,
+        data: modifiedResult,
       },
     };
   }

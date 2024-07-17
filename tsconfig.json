@@ -9,6 +9,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["Src/**/*", "Src/Dto/Request/.ts"],
+  "include": ["Src/**/*", "Src/dto/request/.ts"],
   "exclude": ["node_modules"]
 }

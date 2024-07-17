@@ -1,12 +1,12 @@
-import { GetResponse } from "../Dto/Response/getres";
-import { PhoneEntry } from "../Dto/Request/createreq";
-import { Response } from "../Dto/Response/createres";
-import { UpdateResponse } from "../Dto/Response/updateres";
-import { UpdateManyPhoneEntry } from "../Dto/Request/updatereq";
-import { ManyUpdateResponse } from "../Dto/Response/updateres";
-import { UpdatePhoneEntry } from "../Dto/Request/updatereq";
-import { ManyResponse } from "../Dto/Response/createres";
-import { PaginationResponse } from "../Dto/Response/getres";
+import { GetResponse } from "../dto/response/getres";
+import { PhoneEntry } from "../dto/request/createreq";
+import { Response } from "../dto/response/createres";
+import { UpdateResponse } from "../dto/response/updateres";
+import { UpdateManyPhoneEntry } from "../dto/request/updatereq";
+import { ManyUpdateResponse } from "../dto/response/updateres";
+import { UpdatePhoneEntry } from "../dto/request/updatereq";
+import { ManyResponse } from "../dto/response/createres";
+import { PaginationResponse } from "../dto/response/getres";
 
 export interface implePhoneBookService {
   get: (reqid: string) => Promise<GetResponse[] | undefined>;

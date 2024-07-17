@@ -1,9 +1,9 @@
-import { Document, Schema, model, Types } from "mongoose";
+import { Document, Schema, model } from "mongoose";
 type ContactInfo = {
   type: string;
   number: number;
 };
-type DataDocument = Document & {
+export type DataDocument = Document & {
   name: string;
   numbers: ContactInfo[];
   work: string;
@@ -25,6 +25,6 @@ const directorySchema = new Schema<DataDocument>({
   updated_time: { type: Date, required: true },
 });
 
-const dir = model<DataDocument>("dir", directorySchema);
+export const dir = model<DataDocument>("dir", directorySchema);
 
-export default dir;
+// export default dir;

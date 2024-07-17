@@ -1,11 +1,11 @@
 import express from "express";
 import { Response, Request } from "express";
 
-import logger from "../Core/logger";
-import { PhoneEntry } from "../Dto/Request/createreq";
-import { UpdatePhoneEntry } from "../Dto/Request/updatereq";
-import { UpdateManyPhoneEntry } from "../Dto/Request/updatereq";
-import Services from "../Services/servicesimpl";
+import logger from "../core/logger";
+import { PhoneEntry } from "../dto/request/createreq";
+import { UpdatePhoneEntry } from "../dto/request/updatereq";
+import { UpdateManyPhoneEntry } from "../dto/request/updatereq";
+import Services from "../services/servicesimpl";
 
 const service = new Services();
 const router = express.Router();

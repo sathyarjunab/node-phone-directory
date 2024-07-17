@@ -1,18 +1,18 @@
-import SchemaRepo from "../Repository/Impl/repositoryimpl";
-import logger from "../Core/logger";
-import dir from "../Repository/schemas";
-import { GetResponse } from "../Dto/Response/getres";
-import { Response } from "../Dto/Response/createres";
-import { PhoneEntry } from "../Dto/Request/createreq";
-import { UpdateResponse } from "../Dto/Response/updateres";
-import { UpdateManyPhoneEntry } from "../Dto/Request/updatereq";
-import { ManyUpdateResponse } from "../Dto/Response/updateres";
-import { UpdatePhoneEntry } from "../Dto/Request/updatereq";
+import SchemaRepo from "../repository/impl/repositoryimpl";
+import logger from "../core/logger";
+import { dir } from "../repository/schemas";
+import { GetResponse } from "../dto/response/getres";
+import { Response } from "../dto/response/createres";
+import { PhoneEntry } from "../dto/request/createreq";
+import { UpdateResponse } from "../dto/response/updateres";
+import { UpdateManyPhoneEntry } from "../dto/request/updatereq";
+import { ManyUpdateResponse } from "../dto/response/updateres";
+import { UpdatePhoneEntry } from "../dto/request/updatereq";
 import { implePhoneBookService } from "./services";
-import { ManyResponse } from "../Dto/Response/createres";
-import { PaginationResponse } from "../Dto/Response/getres";
+import { ManyResponse } from "../dto/response/createres";
+import { PaginationResponse } from "../dto/response/getres";
 
-class phoneBookService implements implePhoneBookService {
+class PhoneBookService implements implePhoneBookService {
   private repo: SchemaRepo;
   constructor() {
     this.repo = new SchemaRepo();
@@ -131,4 +131,4 @@ class phoneBookService implements implePhoneBookService {
     }
   }
 }
-export default phoneBookService;
+export default PhoneBookService;
