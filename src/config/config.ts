@@ -1,4 +1,4 @@
-import dataChunks from "../constants/constants";
+import dataChunks from "../constants/Constants";
 
 let connectionString = [
   "mongodb+srv://",

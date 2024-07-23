@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 import cors from "cors";
 import bodyParser from "body-parser";
 
-import logger from "./core/logger";
-import connectionString from "./config/config";
-import Route from "./routes/routes";
+import logger from "./core/Logger";
+import connectionString from "./config/Config";
+import Route from "./routes/Routes";
 
 let crudRoutes = new Route().connect();
 

@@ -1,11 +1,13 @@
 import express from "express";
 import { Response, Request } from "express";
 
-import logger from "../core/logger";
-import { PhoneEntry } from "../dto/request/createreq";
-import { UpdatePhoneEntry } from "../dto/request/updatereq";
-import { UpdateManyPhoneEntry } from "../dto/request/updatereq";
-import Services from "../services/servicesimpl";
+import logger from "../core/Logger";
+import { PhoneEntry } from "../dto/request/CustomRequestInterfaces";
+import { UpdatePhoneEntry } from "../dto/request/CustomRequestInterfaces";
+import { UpdateManyPhoneEntry } from "../dto/request/CustomRequestInterfaces";
+import Services from "../service/impl/PhoneBookServiceImpl";
+import { CustumRequest } from "../dto/request/CustomRequestInterfaces";
+import { CustumPatchRequest } from "../dto/request/CustomRequestInterfaces";
 
 const service = new Services();
 const router = express.Router();
@@ -22,8 +24,9 @@ class Route {
     router.get("/paginationget", this.paginationGet);
   }
   async get(req: Request, res: Response): Promise<void> {
+    //req res coustom type
     try {
-      const result = await service.get();
+      const result = await service.getContact();
       res.status(200).json(result);
     } catch (err: any) {
       logger.error(err);
@@ -31,10 +34,10 @@ class Route {
     }
   }
 
-  async post(req: Request, res: Response): Promise<void> {
+  async post(req: CustumRequest, res: Response): Promise<void> {
     try {
       let body = req.body as PhoneEntry;
-      const result = await service.post(body);
+      const result = await service.createContact(body);
       res.status(201).json(result);
     } catch (err: any) {
       logger.error(err);
@@ -42,11 +45,11 @@ class Route {
     }
   }
 
-  async patch(req: Request, res: Response): Promise<void> {
+  async patch(req: CustumPatchRequest, res: Response): Promise<void> {
     try {
       let body = req.body as UpdatePhoneEntry;
       let id = req.params.id as string;
-      const result = await service.patch(id, body);
+      const result = await service.updateContact(id, body);
       res.status(200).json(result);
     } catch (err: any) {
       logger.error(err);
@@ -57,7 +60,7 @@ class Route {
   async delete(req: Request, res: Response): Promise<void> {
     try {
       let id = req.params.id as string;
-      const result = await service.del(id);
+      const result = await service.deleteContact(id);
       res.status(200).json(result);
     } catch (err: any) {
       logger.error(err);
@@ -96,9 +99,9 @@ class Route {
   }
   async paginationGet(req: Request, res: Response): Promise<void> {
     try {
-      let { page, limit } = req.query;
-      let pageString = page?.toString();
-      let limitString = limit?.toString();
+      let { page = 1, limit = 6 } = req.query;
+      let pageString = page.toString();
+      let limitString = limit.toString();
       const data = await service.paginationGet(pageString, limitString);
       res.status(200).json(data);
     } catch (err: any) {
