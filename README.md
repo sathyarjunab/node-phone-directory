@@ -1,3 +1,3 @@
 # node-phone-directory
 
-# The work on the phone directory is available in the features branch.
+#I am still working on the phone directory, and progress can be tracked in the features branch.
