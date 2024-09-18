@@ -1,1 +1,1 @@
-#I am still working on the phone directory BUT!!!, the progress can be tracked in the features branch.
+#I am still working on the phone directory BUT!!!, the progect can be seen in the features branch.
